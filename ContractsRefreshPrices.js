@@ -2,6 +2,7 @@ $(document).ready(function(){
     var arInterval = 20000;
 
     var rfOpts = ['off', 'on', 'timeout', 'paused', 'refreshing', 'determine'];
+    var autoRefresh = false;
     var rfStatus = 0;
     var rfStatusId = null;
 
@@ -14,6 +15,11 @@ $(document).ready(function(){
     }
 
     var setStatus = function(newStatus, determine) {
+        if (newStatus == 'on') {
+            autoRefresh = true;
+        } else if (newStatus == 'off') {
+            autoRefresh = false;
+        }
 
         rfStatus = rfOpts.indexOf(newStatus);
 
@@ -28,6 +34,7 @@ $(document).ready(function(){
 
     $('body').on('click', '#refreshPrices', function() {
         if ($(this).is(':checked')) {
+            setStatus('on');
             refreshTimeout(refreshPrices, arInterval);
         } else {
             setStatus('off');
@@ -51,8 +58,6 @@ $(document).ready(function(){
         if ($('#contractsRefresh').length > 0) {
             $('#contractsRefresh').remove();
         }
-
-        var autoRefresh = (getStatus() != 'off');
 
         $('<span id="contractsRefresh"> \
             <input id="refreshPrices" type="checkbox" \
