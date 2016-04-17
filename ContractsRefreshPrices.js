@@ -1,8 +1,8 @@
 $(document).ready(function(){
     var arInterval = 20000;
 
-    var rfOpts = ['off', 'on', 'timeout', 'paused', 'refreshing', 'determine'];
-    var autoRefresh = false;
+    var rfOpts = ['off', 'on', 'timeout', 'paused', 'refreshing'];
+    var autoRefresh = true;
     var rfStatus = 0;
     var rfStatusId = null;
 
@@ -14,7 +14,7 @@ $(document).ready(function(){
         return $('#refreshPrices').is(':checked');
     }
 
-    var setStatus = function(newStatus, determine) {
+    var setStatus = function(newStatus) {
         if (newStatus == 'on') {
             autoRefresh = true;
         } else if (newStatus == 'off') {
