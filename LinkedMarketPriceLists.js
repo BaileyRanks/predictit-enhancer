@@ -41,7 +41,7 @@ $(document).ready(function(){
          var timeoutId = setTimeout(function() {
             if ($cPrice.hasClass('showPrice')) {
 
-        		window.postMessage('pauseRefresh', "*")
+                window.postMessage('pauseRefresh', "*")
 
                 showPrices(e, $cPrice);
             }
@@ -56,7 +56,7 @@ $(document).ready(function(){
 
          var timeoutId = setTimeout(function() {
             if (!$cPrice.hasClass('showPrice')) {
-		        window.postMessage('unpauseRefresh', "*")
+                window.postMessage('unpauseRefresh', "*")
             }
         }, 200);
     }
