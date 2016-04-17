@@ -140,5 +140,5 @@ $(document).ready(function(){
     }
     
 
-    appendCheckbox();
+    initNextRefresh();
 });
