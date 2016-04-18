@@ -117,7 +117,7 @@ $(document).ready(function(){
 
             setStatus('refreshing');
 
-            $('#outcomes').css('height', $('#outcomes').height() + 'px');
+            refreshCss(true);
 
             //do the actual refresh
             $('a.refresh').first().trigger('click');
@@ -125,12 +125,27 @@ $(document).ready(function(){
         }, 300);
     }
 
+    var refreshCss = function(on) {
+
+        if (on) {
+            $('#spinnnerGo, #spinnnerGoEmpty, #spinnerContractList').css('z-index', 'none');
+            $('#spinnnerGo, #spinnnerGoEmpty, #spinnerContractList').css('visibility', 'hidden');
+            $('#spinnnerGo, #spinnnerGoEmpty, #spinnerContractList').css('position', 'relative');
+            $('#outcomes').css('height', $('#outcomes').height() + 'px');
+        } else {
+            $('#outcomes').css('height', '');
+            $('#spinnnerGo, #spinnnerGoEmpty, #spinnerContractList').css('visibility', '');
+            $('#spinnnerGo, #spinnnerGoEmpty, #spinnerContractList').css('position', '');
+            $('#spinnnerGo, #spinnnerGoEmpty, #spinnerContractList').css('z-index', '');
+        }
+    };
+
     var initNextRefresh = function() {
-        if (!$("#spinnerContractList").is(':visible')) {
+        if (!$("#spinnnerGo, #spinnnerGoEmpty, #spinnerContractList").is(':visible')) {
 
             appendCheckbox();
 
-            $('#outcomes').css('height', '');
+            refreshCss(false);
 
             refreshTimeout(refreshPrices, arInterval);
 
@@ -138,7 +153,6 @@ $(document).ready(function(){
             setTimeout(initNextRefresh, 300);
         }
     }
-    
 
     initNextRefresh();
 });
