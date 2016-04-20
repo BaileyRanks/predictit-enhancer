@@ -49,6 +49,14 @@ $(document).ready(function(){
 		window.postMessage('pauseRefresh', "*")
     });
 
+    $('body').on('click', '.sharesUp, .sharesDown', function() {
+		window.postMessage('pauseRefresh', "*")
+    });
+
+    $('body').on('click', '#cancelModal', function() {
+		window.postMessage('unpauseRefresh', "*")
+    });
+
     $('body').on('focusout', '#arInterval', function() {
         arInterval = ($.isNumeric($(this).val()) ? $(this).val() : 20) * 1000;
 		window.postMessage('unpauseRefresh', "*")
@@ -109,7 +117,7 @@ $(document).ready(function(){
     function refreshPrices() {
         $refresher = $('#refreshPrices');
 
-        if (!isEnabled()) { 
+        if (!isEnabled() || $('.modal').is(':visible')) { 
             return; 
         }
 

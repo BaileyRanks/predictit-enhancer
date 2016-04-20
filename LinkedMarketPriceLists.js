@@ -54,7 +54,11 @@ $(document).ready(function(){
 
         $('#price_table').remove();
 
-         var timeoutId = setTimeout(function() {
+        if (e.type == 'click' || $('.modal').is(':visible')) {
+            return;
+        }
+
+        var timeoutId = setTimeout(function() {
             if (!$cPrice.hasClass('showPrice')) {
                 window.postMessage('unpauseRefresh', "*")
             }
