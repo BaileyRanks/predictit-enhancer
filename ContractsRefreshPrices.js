@@ -2,7 +2,7 @@ $(document).ready(function(){
     var arInterval = 20000;
 
     var rfOpts = ['off', 'on', 'timeout', 'paused', 'refreshing'];
-    var autoRefresh = true;
+    var autoRefresh = false;
     var rfStatus = 0;
     var rfStatusId = null;
 
