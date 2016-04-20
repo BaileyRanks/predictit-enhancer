@@ -42,7 +42,7 @@ window.addEventListener("message", function(event) {
 
 
 function init(){
-
+	
 	Markets = document.getElementsByClassName("panel panel-default activity hidden-xs")
 
 	Markets =Array.prototype.slice.call(Markets)
@@ -68,21 +68,24 @@ function init(){
 
 	var counter= Object.keys(currentView).length;
 
-
+	var currentTime = (new Date()).getTime();
 	
 	for(i=0; i<Markets.length; i++){
 
 		if(currentView[getName(Markets[i])]==null){
-			currentView[getName(Markets[i])]=[counter, false];
+			currentView[getName(Markets[i])]=[counter, false, currentTime];
 			counter++;
 		}
 		//Set a view position for new markets that were not included at last load, 
 		//automatically sent to bottom of viewpage
 		
 
-		makeButtons(Markets[i]);
+		makeButtons(Markets[i], Markets);
 			
 	}
+	
+	
+	cleanup(Markets, currentTime);
 	
 	save();
 	reorder(Markets);
@@ -110,7 +113,7 @@ function init(){
 
 //Adds up and down buttons, Collapse/expand button for linked markets
 
-function makeButtons(market){
+function makeButtons(market, Markets){
 
 	topBar=market.getElementsByClassName("contract-title");
 	
@@ -126,9 +129,12 @@ function makeButtons(market){
 
 	down = makeDown(topBar[0], market);
 	up = makeUp(topBar[0], market);
+	totop = makeTop(topBar[0], market, Markets);
 				
+	topBar[0].appendChild(totop);
 	topBar[0].appendChild(up);	
-	topBar[0].appendChild(down);	
+	topBar[0].appendChild(down);
+	
 	
 	makeCollapse(topBar[0], market);
 }
@@ -190,6 +196,39 @@ function makeUp(x, market){
 	});
 	return up;
 }
+
+
+//Make a move to top button
+
+function makeTop(x, market, Markets){
+	var totop=document.createElement("span");
+	totop.innerText='\uD83D\uDD1D';
+	totop.onmouseenter = function(){totop.style.color="white"; totop.style.cursor="pointer";};
+	totop.onmouseout = function(){totop.style.color=""; totop.style.cursor="auto";};
+	totop.style.marginRight = "5px";
+	totop.style.marginLeft = "10px";
+	
+	totop.addEventListener("click", function(){
+		title=getName(market);
+		temp = currentView[title][0];
+		currentView[title][0]=0;
+		for(key in currentView){
+			if(key != title && currentView[key][0]<temp){
+				currentView[key][0]++;
+			}
+		}
+		
+		//eventListener: shift indices of everything between top and current position of market
+		
+		reorder(Markets);
+		
+		save();
+	});
+	return totop;
+}
+
+
+
 
 
 //Make a Collapse and Expand button. Only applies to linked markets.
@@ -313,12 +352,45 @@ function reorder(Markets){
 
 
 
+//Remove old, irrelevant markets from currentView. Old is defined as not used for more than 1 week.
 
-
-
-
-
-
+function cleanup(Markets, currentTime){
+	var banList = [];
+	var tooLong = 604800000; //one weeks worth of ms
+	
+	for(key in currentView){
+		var foundIt = false;
+		for(j=0; j<Markets.length; j++){
+			if(key == getName(Markets[j])){
+				foundIt = true;
+				currentView[key][2] = currentTime;
+			}
+		}
+		
+		if(foundIt == false && currentTime-currentView[key][2] > tooLong){
+			banList.push(currentView[key][0]);
+			delete currentView[key];
+		}
+	}
+	
+	banList.sort(function(a, b){
+		return b-a;
+	});
+	
+	for(key in currentView){
+		for(j=0; j<banList.length; j++){
+			if(currentView[key][0]>banList[j]){
+				currentView[key][0]--;
+			}
+			if(currentView[key].length < 3){
+				currentView[key][2] = currentTime;
+			}
+		}
+	}
+	
+	save();
+	
+}
 
 
 
@@ -330,9 +402,5 @@ function save(){
 		console.log('Settings saved');
   });
 }
-
-
-
-
 
 
