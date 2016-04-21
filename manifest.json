@@ -1,5 +1,5 @@
 {
-	"name": "PredictIt Enhancer",
+	"name": "PredictIt Enhancer Legacy",
 	"version": "1.4",
 	"manifest_version": 2,
 	"permissions": [
@@ -7,21 +7,21 @@
 	"https://www.predictit.org/Market/*",
 	"storage"
 	],
-    "web_accessible_resources": ["TopDownMenu2.js", "ContractsRefreshPrices.js", "https://www.predictit.org/Content/css/myShares.css","DistinguishPriceModals.js"],
+    "web_accessible_resources": ["TopDownMenu2.js", "ContractsRefreshPrices.js", "https://www.predictit.org/Content/css/myShares.css"],
 	"icons": {"128": "icon128.png"},
 	"content_scripts": [
 	{
 		"matches": ["https://www.predictit.org/Profile/MyShares"],
-		"js": ["jquery.js","bootstrap.min.js","MySharesOrdering.js","LinkedMarketPriceLists.js","MySharesHoverView.js"],
+		"js": ["jquery.js","bootstrap.min.js","LinkedMarketPriceLists.js","MySharesHoverView.js"],
 		"run_at": "document_end"
 	},
 	{
 		"matches": ["https://www.predictit.org/Market/*"],
-		"js": ["jquery.js","bootstrap.min.js","global.js","LinkedMarketPriceLists.js","MySharesHoverView.js","loadTopDown.js","loadAutoRefresh.js", "MySharesOrdering.js"]
+		"js": ["jquery.js","bootstrap.min.js","global.js","LinkedMarketPriceLists.js","MySharesHoverView.js","loadTopDown.js"]
 	},
 	{
 		"matches": ["https://www.predictit.org/Contract/*"],
-		"js": ["jquery.js","bootstrap.min.js","global.js","LinkedMarketPriceLists.js","MySharesHoverView.js","loadTopDown.js", "MySharesOrdering.js"]
+		"js": ["jquery.js","bootstrap.min.js","global.js","LinkedMarketPriceLists.js","MySharesHoverView.js","loadTopDown.js"]
 	}
 	]
 }
