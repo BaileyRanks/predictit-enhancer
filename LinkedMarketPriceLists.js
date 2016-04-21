@@ -35,13 +35,14 @@ $(document).ready(function(){
     function activatePriceTable(e) {
         $('span.sharesUp, span.sharesDown').removeClass('showPrice');
 
-		window.postMessage('pauseRefresh', "*")
-
         $cPrice = $(this);
         $cPrice.addClass('showPrice');
 
          var timeoutId = setTimeout(function() {
             if ($cPrice.hasClass('showPrice')) {
+
+                window.postMessage('pauseRefresh', "*")
+
                 showPrices(e, $cPrice);
             }
         }, 200);
@@ -53,9 +54,13 @@ $(document).ready(function(){
 
         $('#price_table').remove();
 
-         var timeoutId = setTimeout(function() {
+        if (e.type == 'click' || $('.modal').is(':visible')) {
+            return;
+        }
+
+        var timeoutId = setTimeout(function() {
             if (!$cPrice.hasClass('showPrice')) {
-		        window.postMessage('unpauseRefresh', "*")
+                window.postMessage('unpauseRefresh', "*")
             }
         }, 200);
     }
